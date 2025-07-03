@@ -1,23 +1,131 @@
 <!doctype html>
 <html lang="kr"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainlayout}">
+
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bootstrap demo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 <body>
-<div class="d-flex vh-100 align-items-center justify-content-center">
-    <div class="container text-center">
-        <div class="row">
-            <div class="col">
+
+<main layout:fragment="content" class="main">
+    <!-- Hero Section -->
+    <section class="dark-background">
+
+        <div class="d-flex align-items-center justify-content-center">
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col-6 offset-3">
+                        <div class="row">
+                            <div class="col">
+                                <h2 th:text="${partnerDTO.id != null} ? '거래처 수정' : '거래처 등록'" class="my-5"></h2>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <form id="form" th:object="${partnerDTO}">
+                                    <input type="hidden" th:field="*{id}">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" th:field="*{partnerCode}" placeholder="">
+                                        <label for="partnerCode">거래처코드</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" th:field="*{partnerName}" placeholder="">
+                                        <label for="partnerName">거래처명</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="date" class="form-control" th:field="*{startDate}" placeholder="">
+                                        <label for="startDate">거래시작일</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="number" class="form-control" th:field="*{quantity}" placeholder="">
+                                        <label for="quantity">거래수량</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" th:field="*{unitPrice}" placeholder="">
+                                        <label for="unitPrice">거래가격</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" th:field="*{managerCode}" placeholder="">
+                                        <label for="managerCode">담당자코드</label>
+                                    </div>
+                                    <div id="AlertPlaceholder"></div>
+                                    <button class="btn btn-info" type="button" id="form_submit_btn" th:text="${partnerDTO.id != null} ? '수정' : '등록'"></button>
+                                    <a href="/partner/list" class="btn btn-outline-info">취소</a>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
+
+    </section><!-- /Hero Section -->
+
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            $('#form_submit_btn').on('click', function () {
+                const post_data = {}
+
+                $('#form').serializeArray().forEach(field => {
+                    post_data[field.name] = field.value
+                })
+
+                const alertPlaceholder = document.getElementById('AlertPlaceholder')
+
+                const appendAlert = (message, type) => {
+                    const wrapper = document.createElement('div')
+
+                    wrapper.innerHTML = [
+                        `<div class="alert alert-${type} alert-dismissible fade show" role="alert">`,
+                        `   <div>${message}</div>`,
+                        '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+                        '</div>'
+                    ].join('')
+
+                    alertPlaceholder.append(wrapper)
+                }
+
+                if (Object.entries(post_data).some(([key, value]) => key !== 'id' && !value)) {
+                    appendAlert('필드값을 올바르게 입력해주세요', 'danger')
+                    return
+                }
+
+                const url = post_data['id'] ? `/api/partner/${post_data['id']}` : '/api/partner'
+                const method = post_data['id'] ? 'put' : 'post'
+
+                $.ajax({
+                    url,
+                    method,
+                    data: JSON.stringify(post_data),
+                    contentType: 'application/json',
+                    success: function (res) {
+                        Swal.fire({
+                            title: "등록 성공",
+                            icon: "success"
+                        }).then(() => location.href = '/partner/list')
+                    },
+                    error: function () {
+                        Swal.fire({
+                            title: "에러 발생",
+                            icon: "error"
+                        });
+                    }
+                })
+            })
+        })
+    </script>
+</main>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
         crossorigin="anonymous"></script>

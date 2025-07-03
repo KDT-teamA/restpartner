@@ -17,7 +17,7 @@ public class PartnerRestController {
     private final PartnerService partnerService;
 
     //전체조회처리
-    @GetMapping("/")
+    @GetMapping()
     public ResponseEntity<List<PartnerDTO>> get() {
         return ResponseEntity.ok(partnerService.getAllPartners());
     }
@@ -31,7 +31,7 @@ public class PartnerRestController {
     }
 
     //삽입처리
-    @PostMapping("/")
+    @PostMapping()
     public ResponseEntity<PartnerDTO> createPartner(@RequestBody PartnerDTO partnerDTO) {
         PartnerDTO partner = partnerService.createPartner(partnerDTO);
         return ResponseEntity.ok(partner);

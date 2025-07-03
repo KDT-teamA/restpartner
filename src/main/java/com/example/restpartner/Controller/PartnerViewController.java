@@ -4,6 +4,7 @@ import com.example.restpartner.DTO.PartnerDTO;
 import com.example.restpartner.Repository.PartnerRepository;
 import com.example.restpartner.Service.PartnerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,5 +43,14 @@ public class PartnerViewController {
         model.addAttribute("partnerDTO", partnerDTO);
 
         return "partner/form";
+    }
+
+    //상세페이지 /partner/detail/{id}
+    @GetMapping("/detail/{id}")
+    public String detail(@PathVariable Integer id, Model model) {
+        PartnerDTO partnerDTO = partnerService.getPartnerById(id);
+        model.addAttribute("partnerDTO", partnerDTO);
+
+        return "partner/detail";
     }
 }
