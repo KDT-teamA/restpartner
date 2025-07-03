@@ -32,5 +32,5 @@ public class PartnerEntity {
     private Integer unitPrice; //거래가격
 
     @Column
-    private String manager; //담당자코드
+    private String managerCode; //담당자코드
 }

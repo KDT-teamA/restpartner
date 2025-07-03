@@ -19,4 +19,6 @@ public class PartnerDTO {
     private Integer quantity; //거래수량
 
     private Integer unitPrice; //거래가격
+
+    private String managerCode; //담당자코드
 }
