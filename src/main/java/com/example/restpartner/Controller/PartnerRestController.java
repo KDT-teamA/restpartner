@@ -32,7 +32,7 @@ public class PartnerRestController {
 
     //삽입처리
     @PostMapping("/")
-    public ResponseEntity<PartnerDTO> craetePartner(@RequestBody PartnerDTO partnerDTO) {
+    public ResponseEntity<PartnerDTO> createPartner(@RequestBody PartnerDTO partnerDTO) {
         PartnerDTO partner = partnerService.createPartner(partnerDTO);
         return ResponseEntity.ok(partner);
     }
