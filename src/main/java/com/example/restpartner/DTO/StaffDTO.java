@@ -18,7 +18,7 @@ public class StaffDTO {
 
     private String staffName; //담당자명
 
-    private String Position; //직금
+    private String position; //직급
 
     private String phoneNumber; //연락처
 

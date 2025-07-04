@@ -6,12 +6,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class StaffEntity {
+public class AnalystEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,17 +21,17 @@ public class StaffEntity {
     private Integer id;
 
     @Column
-    private String staffCode;
+    private String name;
 
     @Column
-    private String staffName;
+    private Integer experience;
 
     @Column
-    private String position;
+    private String company;
 
     @Column
-    private String phoneNumber;
+    private Integer avgAnnual;
 
-    @Column
-    private String email;
+    @OneToMany(mappedBy = "analyst", fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<StockEntity> stockList;
 }

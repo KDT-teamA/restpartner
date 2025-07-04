@@ -3,6 +3,8 @@ package com.example.restpartner.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter

@@ -1,4 +1,4 @@
-package com.example.restpartner.Controller;
+package com.example.restpartner.Controller.Partner;
 
 import com.example.restpartner.DTO.PartnerDTO;
 import com.example.restpartner.Service.PartnerService;

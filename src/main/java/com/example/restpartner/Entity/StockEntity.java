@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class StaffEntity {
+public class StockEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,17 +19,21 @@ public class StaffEntity {
     private Integer id;
 
     @Column
-    private String staffCode;
+    private String name;
 
     @Column
-    private String staffName;
+    private String market;
 
     @Column
-    private String position;
+    private Integer price;
 
     @Column
-    private String phoneNumber;
+    private Integer close;
 
     @Column
-    private String email;
+    private Integer volume;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "Analyst_id")
+    private AnalystEntity analyst;
 }

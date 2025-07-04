@@ -1,5 +1,6 @@
 package com.example.restpartner.Entity;
 
+import com.example.restpartner.Constant.Level;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,25 +12,17 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class StaffEntity {
+public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Integer id;
 
-    @Column
-    private String staffCode;
+    private String username;
 
-    @Column
-    private String staffName;
+    private String password;
 
-    @Column
-    private String position;
-
-    @Column
-    private String phoneNumber;
-
-    @Column
-    private String email;
+    @Enumerated(EnumType.STRING)
+    private Level level;
 }
