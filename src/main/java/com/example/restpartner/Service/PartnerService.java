@@ -21,40 +21,23 @@ public class PartnerService {
     private final ModelMapper modelMapper;
 
     //전체조회
-    public List<PartnerDTO> getAllPartners() {
-        //전체조회
-        List<PartnerEntity> partnerEntities = partnerRepository.findAll();
-        //변환
-        List<PartnerDTO> partnerDTOS = Arrays.asList(modelMapper.map(partnerEntities, PartnerDTO[].class));
-        //전달
-        return partnerDTOS;
+    public List<PartnerDTO> list() {
+        return Arrays.asList(modelMapper.map(partnerRepository.findAll(), PartnerDTO[].class));
     }
 
     //개별조회(조회할 대상)
-    public PartnerDTO getPartnerById(Integer id) {
-        //개별조회 방법 1
-        PartnerEntity partnerEntity = partnerRepository.findById(id).orElse(null);
-        //개별 조회 방법 2
-        //Optional<PartnerEntity> partnerEntity1 = partnerRepository.findById(id);
-        //변환
-        PartnerDTO partnerDTO = modelMapper.map(partnerEntity, PartnerDTO.class);
-        return partnerDTO;  //return modelMapper.map(partnerEntity, PartnerDTO.class);
+    public PartnerDTO read(Integer id) {
+        return modelMapper.map(partnerRepository.findById(id).orElse(null), PartnerDTO.class);
     }
 
     //삽입(저장할 DTO필요)
-    public PartnerDTO createPartner(PartnerDTO partnerDTO) {
-        //변환
-        PartnerEntity partnerEntity = modelMapper.map(partnerDTO, PartnerEntity.class);
-        PartnerEntity result = partnerRepository.save(partnerEntity);
-        //변환
-        PartnerDTO partnerDTOS = modelMapper.map(result, PartnerDTO.class);
-
-        return partnerDTOS;
-        //return modelMapper.map(partnerRepository.save(partnerEntity), PartnerDTO.class);
+    public PartnerDTO create(PartnerDTO partnerDTO) {
+        PartnerEntity result = partnerRepository.save(modelMapper.map(partnerDTO, PartnerEntity.class));
+        return modelMapper.map(result, PartnerDTO.class);
     }
 
     //수정(대상, 수정할 값)
-    public PartnerDTO updatePartner(Integer id, PartnerDTO partnerDTO) {
+    public PartnerDTO update(Integer id, PartnerDTO partnerDTO) {
         //수정할 데이터를 조회
         Optional<PartnerEntity> read = partnerRepository.findById(id);
         if (read.isPresent()) {
@@ -66,18 +49,14 @@ public class PartnerService {
             read.get().setUnitPrice(partnerDTO.getUnitPrice()); //거래가격
             read.get().setManagerCode(partnerDTO.getManagerCode()); //담당자 코드
 
-            PartnerDTO partnerDTOS = modelMapper.map(partnerDTO, PartnerDTO.class);
-            return partnerDTOS;
+            return modelMapper.map(partnerDTO, PartnerDTO.class);
         }
 
         return null;
-
-        //PartnerEntity read = partnerRepository.findById(id).orElse(null);
-        //if (read != null) {}
     }
 
     //삭제
-    public void deletePartner(Integer id) {
+    public void delete(Integer id) {
         Optional<PartnerEntity> read = partnerRepository.findById(id);
         if (read.isPresent()) {
             partnerRepository.deleteById(id);

@@ -1,10 +1,8 @@
 package com.example.restpartner.Controller;
 
 import com.example.restpartner.DTO.PartnerDTO;
-import com.example.restpartner.Repository.PartnerRepository;
 import com.example.restpartner.Service.PartnerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +20,7 @@ public class PartnerViewController {
     //목록페이지, /partner/list
     @GetMapping("/list")
     public String list(Model model) {
-        List<PartnerDTO> partnerDTOS = partnerService.getAllPartners();
+        List<PartnerDTO> partnerDTOS = partnerService.list();
         model.addAttribute("partnerDTOS", partnerDTOS);
 
         return "partner/list";
@@ -39,7 +37,7 @@ public class PartnerViewController {
     //수정페이지, /partner/update/{id}
     @GetMapping("/update/{id}")
     public String update(@PathVariable Integer id, Model model) {
-        PartnerDTO partnerDTO = partnerService.getPartnerById(id);
+        PartnerDTO partnerDTO = partnerService.read(id);
         model.addAttribute("partnerDTO", partnerDTO);
 
         return "partner/form";
@@ -48,7 +46,7 @@ public class PartnerViewController {
     //상세페이지 /partner/detail/{id}
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable Integer id, Model model) {
-        PartnerDTO partnerDTO = partnerService.getPartnerById(id);
+        PartnerDTO partnerDTO = partnerService.read(id);
         model.addAttribute("partnerDTO", partnerDTO);
 
         return "partner/detail";

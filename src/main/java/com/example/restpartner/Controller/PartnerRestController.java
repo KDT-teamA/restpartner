@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.attribute.standard.PrinterStateReason;
 import java.util.List;
 
 @RestController
@@ -19,13 +18,13 @@ public class PartnerRestController {
     //전체조회처리
     @GetMapping()
     public ResponseEntity<List<PartnerDTO>> get() {
-        return ResponseEntity.ok(partnerService.getAllPartners());
+        return ResponseEntity.ok(partnerService.list());
     }
     
     //개별조회처리
     @GetMapping("/{id}")
     public ResponseEntity<PartnerDTO> getPartnerById(@PathVariable Integer id) {
-        PartnerDTO partner = partnerService.getPartnerById(id);
+        PartnerDTO partner = partnerService.read(id);
 
         return partner != null ? ResponseEntity.ok(partner) : ResponseEntity.notFound().build();
     }
@@ -33,14 +32,14 @@ public class PartnerRestController {
     //삽입처리
     @PostMapping()
     public ResponseEntity<PartnerDTO> createPartner(@RequestBody PartnerDTO partnerDTO) {
-        PartnerDTO partner = partnerService.createPartner(partnerDTO);
+        PartnerDTO partner = partnerService.create(partnerDTO);
         return ResponseEntity.ok(partner);
     }
     
     //수정처리
     @PutMapping("/{id}")
     public ResponseEntity<PartnerDTO> updatePartner(@PathVariable Integer id, @RequestBody PartnerDTO partnerDTO) {
-        PartnerDTO partner = partnerService.updatePartner(id, partnerDTO);
+        PartnerDTO partner = partnerService.update(id, partnerDTO);
 
         return partner != null ? ResponseEntity.ok(partner) : ResponseEntity.notFound().build();
     }
@@ -48,7 +47,7 @@ public class PartnerRestController {
     //삭제처리
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePartner(@PathVariable Integer id) {
-        partnerService.deletePartner(id);
+        partnerService.delete(id);
         return ResponseEntity.ok().build();
     }
 }
